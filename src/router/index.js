@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '../components/login.vue'
-import Home from '../components/home.vue'
 
 Vue.use(VueRouter)
 
@@ -12,11 +10,31 @@ const routes = [
   },
   {
     path: '/login',
-    component: Login
+    component: () =>
+      import('../views/login')
   },
   {
     path: '/home',
-    component: Home
+    component: () =>
+      import('../views/home'),
+    children: [
+      {
+        path: 'exam',
+        component: () => import('../components/exam.vue')
+      },
+      {
+        path: 'grade',
+        component: () => import('../components/grade')
+      },
+      {
+        path: 'subject',
+        component: () => import('../components/subject')
+      },
+      {
+        path: 'curriculum',
+        component: () => import('../components/curriculum')
+      }
+    ]
   }
 ]
 
@@ -27,7 +45,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   if (to.path === '/login') return next()
   const tokenStr = window.sessionStorage.getItem('token')
-  if (!tokenStr) return next('/login')
+  if (!tokenStr) return next('/')
   next()
 })
 

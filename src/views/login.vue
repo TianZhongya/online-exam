@@ -2,9 +2,10 @@
   <div class="login_container">
     <div class="login_box">
       <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules" label-width="0px" class="login_form">
+        <h3>在线考试系统</h3>
         <!--用户名-->
         <el-form-item prop="username">
-          <el-input v-model="loginForm.username" placeholder="请输入用户名" prefix-icon="el-icon-user"></el-input>
+          <el-input v-model="userFlag" placeholder="请输入用户名" prefix-icon="el-icon-user"></el-input>
         </el-form-item>
         <!--密码-->
         <el-form-item prop="password">
@@ -23,18 +24,22 @@
 export default {
   data () {
     return {
+      regEmail: /^([a-z0-9_.-]+)@([\da-z.-]+)\.([a-z.]{2,6})$/,
+      regName: /^[a-z_-]{3,16}$/,
+      regMobile: /^0?1[3|4|5|8][0-9]\d{8}$/,
+      userFlag: '',
       loginForm: {
-        username: '',
-        password: ''
+        email: '', // wangzy5517@mails.jlu.edu.cn
+        mobile: '', // 15526649681
+        password: 'qwertyuiop', // qwertyuiop
+        username: '' // wzy
       },
       loginFormRules: {
-        username: [
-          { required: true, message: '请输入学号', trigger: 'blur' },
-          { min: 8, max: 8, message: '请输入8位数字', trigger: 'blur' }
-        ],
+        userFlag: [
+          { required: true, message: '请输入字符', trigger: 'blur' }],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 8, max: 16, message: '长度为8~16位字符', trigger: 'blur' }
+          { min: 0, max: 16, message: '长度为8~16位字符', trigger: 'blur' }
         ]
       }
     }
@@ -46,13 +51,17 @@ export default {
     },
     login () {
       this.$refs.loginFormRef.validate(async (valid) => {
+        if (this.regMobile.test(this.userFlag)) this.loginForm.mobile = this.userFlag
+        if (this.regEmail.test(this.userFlag)) this.loginForm.email = this.userFlag
+        if (this.regName.test(this.userFlag)) this.loginForm.username = this.userFlag
         if (!valid) return
-        const { data: res } = await this.$http.post('login', this.loginForm)
-        if (res.meta.status !== 200) return this.$message.error('登陆失败')
+        const { data: res } = await this.$http.post('api/v1/auth', JSON.stringify(this.loginForm))
+        const { data: get } = await this.$http.get('api/v1/auth')
+        if (res.msg !== 'OK') return this.$message.error('登陆失败')
         this.$message.success('登陆成功')
-
-        window.sessionStorage.setItem('token', res.data.token)
-        this.$router.push('/home')
+        window.sessionStorage.setItem('token', res.data)
+        window.sessionStorage.setItem('nickname', get.data.nickname)
+        await this.$router.push('/home')
       })
     }
   }
