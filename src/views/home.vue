@@ -13,11 +13,12 @@
       <!--侧边栏-->
       <el-aside width="200px">
         <div class="personal">
-            <img src="../assets/user.png" style="width:100px;border-radius: 50%;padding: 10px">
+          <img src="../assets/user.png" style="width:100px;border-radius: 50%;padding: 10px">
           <div>{{nickname}}</div>
         </div>
         <!--侧边栏菜单区域-->
-        <el-menu router :default-active="$route.path" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+        <el-menu router :default-active="$route.path" background-color="#545c64" text-color="#fff"
+                 active-text-color="#ffd04b">
           <!--一级菜单-->
           <el-menu-item index="/home/exam">
             <template slot="title">
@@ -54,6 +55,13 @@
 </template>
 
 <script>export default {
+  created () {
+    const res = this.$http.get('api/v1/auth')
+    res.then((v) => {
+      if (!v.data.data) return this.$router.push('/')
+      window.sessionStorage.setItem('nickname', v.data.data.nickname)
+    })
+  },
   data () {
     return {
       nickname: window.sessionStorage.getItem('nickname')
@@ -71,10 +79,11 @@
 </script>
 
 <style type="less" scoped>
-  .personal{
+  .personal {
     height: 180px;
     background-color: #847b7b;
   }
+
   .home_container {
     height: 100%;
   }
