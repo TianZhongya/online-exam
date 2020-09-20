@@ -55,12 +55,12 @@
 </template>
 
 <script>export default {
-  created () {
+  beforeCreate () {
     const res = this.$http.get('api/v1/auth')
     res.then((v) => {
       if (!v.data.data) return this.$router.push('/')
       window.sessionStorage.setItem('nickname', v.data.data.nickname)
-    })
+    }).finally(this.nickname = window.sessionStorage.getItem('nickname'))
   },
   data () {
     return {

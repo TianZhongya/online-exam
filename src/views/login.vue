@@ -28,8 +28,8 @@
         <el-form-item label="密码" prop="password">
           <el-input type="password" v-model="registerForm.password" placeholder="请输入6~32位密码" prefix-icon="el-icon-lock"></el-input>
         </el-form-item>
-        <el-form-item label="重复密码" prop="password">
-          <el-input type="password" v-model="check_password" placeholder="请重新输入密码" prefix-icon="el-icon-lock"></el-input>
+        <el-form-item label="重复密码" prop="checkPassword">
+          <el-input type="password" v-model="checkPassword" placeholder="请重新输入密码" prefix-icon="el-icon-lock"></el-input>
         </el-form-item>
         <el-form-item label="真实姓名" prop="nickname">
           <el-input v-model="registerForm.nickname" placeholder="请输入姓名" prefix-icon="el-icon-s-custom"></el-input>
@@ -66,28 +66,32 @@
 <script>
 export default {
   data () {
+    const pwdCheck = async (rule, value, callback) => {
+      if (this.registerForm.password !== this.checkPassword) return callback(new Error('两次'))
+      callback()
+    }
     return {
+      checkPassword: '',
       loginHidden: false,
       registerHidden: true,
-      check_password: '',
       regEmail: /^([a-z0-9_.-]+)@([\da-z.-]+)\.([a-z.]{2,6})$/,
       regName: /^[a-z_-]{3,16}$/,
       regMobile: /^0?1[3|4|5|8][0-9]\d{8}$/,
       userFlag: '',
       loginForm: {
-        email: '', // wangzy5517@mails.jlu.edu.cn
-        mobile: '', // 15526649681
-        password: 'qwertyuiop', // qwertyuiop
-        username: '' // wzy
+        email: '',
+        mobile: '',
+        password: '',
+        username: ''
       },
       registerForm: {
-        email: '1438472761@qq.com',
-        mobile: '18343299762',
-        nickname: '田忠亚',
-        password: '262319',
-        roleId: '1',
+        email: '',
+        mobile: '',
+        nickname: '',
+        password: '',
+        roleId: '',
         secret: '',
-        username: 'tianzhongya'
+        username: ''
       },
       loginFormRules: {
         userFlag: [
@@ -105,6 +109,9 @@ export default {
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 6, max: 32, message: '长度为6~32位字符', trigger: 'blur' }
+        ],
+        checkPassword: [
+          { required: true, validator: pwdCheck, message: '请输入相同密码', trigger: 'blur' }
         ],
         nickname: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -154,7 +161,7 @@ export default {
         const { data: res } = await this.$http.post('api/v1/users', JSON.stringify(this.registerForm))
         if (res.code !== 0) return this.$message.error(res.msg)
         this.$message.success('注册成功')
-        await this.$router.push('/')
+        await this.goLogin()
       })
     },
     goLogin () {

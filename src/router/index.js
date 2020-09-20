@@ -44,10 +44,12 @@ const router = new VueRouter({
 
 // router.beforeEach((to, from, next) => {
 //   if (to.path === '/login') return next()
-//   const { data: tokenStr } = this.$http.get('api/v1/auth')
-//   console.log(tokenStr)
-//   if (!tokenStr.data) return next('/')
-//   next()
+//   const res = this.$http.get('api/v1/auth')
+//   console.log(res)
+//   res.then((v) => {
+//     if (!v.data.data) return this.$router.push('/')
+//     next()
+//   })
 // })
 
 export default router
