@@ -70,6 +70,7 @@
 </template>
 
 <script>
+import { errorTip } from '@/utils/tips'
 export default {
   data () {
     const pwdCheck = async (rule, value, callback) => {
@@ -160,9 +161,7 @@ export default {
             this.$message.success('登陆成功')
             this.$router.push('/home')
           })
-          .catch(reason => {
-            // this.$message.error(reason.message)
-          })
+          .catch(errorTip)
       })
     },
     register () {
