@@ -73,7 +73,7 @@ import { errorTip } from '@/utils/tips'
 import store from '../store'
 
 export default {
-  created () {
+  beforeCreate () {
     this.$axios.get('api/v1/auth')
       .then((data) => {
         console.log(data)
@@ -102,16 +102,15 @@ export default {
       switch (id) {
         case 1: return [
           { id: 0, path: 'exam', authName: '考试列表' },
-          { id: 1, path: 'courses', authName: '查询课程' }
-        ]
+          { id: 1, path: 'courses', authName: '查询课程' },
+          { id: 2, path: 'courses', authName: 'admin' }]
         case 2: return [
           { id: 0, path: 'exam', authName: '考试列表' },
-          { id: 1, path: 'grade', authName: '查看成绩' }
-        ]
+          { id: 1, path: 'grade', authName: '查看成绩' },
+          { id: 2, path: 'courses', authName: 'student' }]
         case 3: return [
           { id: 0, path: 'exam', authName: '考试列表' },
-          { id: 1, path: 'grade', authName: '查看成绩' }
-        ]
+          { id: 1, path: 'grade', authName: 'teacher' }]
       }
     }
   }

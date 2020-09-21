@@ -54,6 +54,11 @@
 <script>
 export default {
   created () {
+    this.$axios.get('api/v1/courses')
+      .then((data) => {
+        console.log(data)
+        this.courseTable = data.results
+      })
   },
   data () {
     return {
@@ -64,7 +69,7 @@ export default {
           startTime: '',
           subjectName: '',
           subtitle: '',
-          teacherNames: ['']
+          teacherNames: []
         }
       ]
     }
