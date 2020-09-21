@@ -5,17 +5,6 @@
       <el-breadcrumb-item>考试列表</el-breadcrumb-item>
     </el-breadcrumb>
     <el-card>
-      <el-col :span="7">
-        <el-input
-          placeholder="请输入内容"
-          clearable
-        >
-          <el-button
-            slot="append"
-            icon="el-icon-search"
-          ></el-button>
-        </el-input>
-      </el-col>
       <el-table
       width=”100%“
       :data="tableData"
@@ -49,6 +38,7 @@
 
 <script>
 export default {
+  name: 'exam',
   data () {
     return {
       tableData: [{

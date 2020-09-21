@@ -76,7 +76,6 @@ export default {
   beforeCreate () {
     this.$axios.get('api/v1/auth')
       .then((data) => {
-        console.log(data)
         store.state.userInfo.id = data.id
         store.state.userInfo.username = data.username
         store.state.userInfo.nickname = data.nickname
