@@ -5,17 +5,11 @@
       <el-breadcrumb-item>所有课程</el-breadcrumb-item>
     </el-breadcrumb>
     <el-card>
-      <el-col :span="7">
-        <el-input
-          placeholder="请输入内容"
-          clearable
-        >
-          <el-button
-            slot="append"
-            icon="el-icon-search"
-          ></el-button>
-        </el-input>
-      </el-col>
+      <el-checkbox-group v-model="checkList" @change="getCourseTable">
+        <el-checkbox label="复选框 A"></el-checkbox>
+        <el-checkbox label="复选框 B"></el-checkbox>
+        <el-checkbox label="复选框 C"></el-checkbox>
+      </el-checkbox-group>
       <el-table
         width=”100%“
         :data="courseTable"
@@ -54,9 +48,15 @@
 <script>
 export default {
   created () {
+    this.$axios.get('api/v1/courses')
+      .then((data) => {
+        console.log(data)
+        this.courseTable = data.results
+      })
   },
   data () {
     return {
+      checkList: [],
       courseTable: [
         {
           endTime: '',
@@ -64,12 +64,14 @@ export default {
           startTime: '',
           subjectName: '',
           subtitle: '',
-          teacherNames: ['']
+          teacherNames: []
         }
       ]
     }
   },
   methods: {
+    getCourseTable () {
+    }
   }
 }
 </script>

@@ -1,7 +1,6 @@
 const store = {
   debug: true,
   state: {
-    message: 'Hello!',
     userInfo: {
       id: 0,
       username: 'UNKNOWN',

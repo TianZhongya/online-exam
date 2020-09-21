@@ -73,12 +73,15 @@ import { errorTip } from '@/utils/tips'
 import store from '../store'
 
 export default {
-  created () {
+  beforeCreate () {
     this.$axios.get('api/v1/auth')
       .then((data) => {
+        console.log(data)
         store.state.userInfo.id = data.id
         store.state.userInfo.username = data.username
         store.state.userInfo.nickname = data.nickname
+        store.state.userInfo.roleId = data.roleId
+        this.menulist = this.getMenuList(store.state.userInfo.roleId)
       }).catch(reason => {
         errorTip(reason)
         return this.$router.push('/')
@@ -86,20 +89,28 @@ export default {
   },
   data () {
     return {
-      state: store.state
+      state: store.state,
+      menulist: []
     }
   },
   methods: {
     logout () {
       this.$axios.delete('api/v1/auth')
-      window.sessionStorage.clear()
       this.$router.push('/')
     },
     getMenuList (id) {
       switch (id) {
-        case 1: return [{ id: 0, path: 'exam', authName: '考试列表' }, { id: 1, path: 'courses', authName: '查询课程' }]
-        case 2: return [{ id: 0, path: 'exam', authName: '考试列表' }, { id: 1, path: 'grade', authName: '查看成绩' }]
-        case 3: return [{ id: 0, path: 'exam', authName: '考试列表' }, { id: 1, path: 'grade', authName: '查看成绩' }]
+        case 1: return [
+          { id: 0, path: 'exam', authName: '考试列表' },
+          { id: 1, path: 'courses', authName: '查询课程' },
+          { id: 2, path: 'courses', authName: 'admin' }]
+        case 2: return [
+          { id: 0, path: 'exam', authName: '考试列表' },
+          { id: 1, path: 'grade', authName: '查看成绩' },
+          { id: 2, path: 'courses', authName: 'student' }]
+        case 3: return [
+          { id: 0, path: 'exam', authName: '考试列表' },
+          { id: 1, path: 'grade', authName: 'teacher' }]
       }
     }
   }
