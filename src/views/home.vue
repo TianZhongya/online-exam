@@ -103,13 +103,14 @@ export default {
         case 1: return [
           { id: 0, path: 'exam', authName: '考试列表' },
           { id: 1, path: 'courses', authName: '查询课程' },
-          { id: 2, path: 'courses', authName: 'admin' }]
+          { id: 2, path: 'grade', authName: 'admin' }]
         case 2: return [
           { id: 0, path: 'exam', authName: '考试列表' },
-          { id: 1, path: 'grade', authName: '查看成绩' },
-          { id: 2, path: 'courses', authName: 'student' }]
+          { id: 1, path: 'courses', authName: '查询课程' },
+          { id: 2, path: 'grade', authName: 'student' }]
         case 3: return [
           { id: 0, path: 'exam', authName: '考试列表' },
+          { id: 1, path: 'courses', authName: '查询课程' },
           { id: 1, path: 'grade', authName: 'teacher' }]
       }
     }
