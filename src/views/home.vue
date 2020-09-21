@@ -17,34 +17,48 @@
           <div>{{nickname}}</div>
         </div>
         <!--侧边栏菜单区域-->
-        <el-menu router :default-active="$route.path" background-color="#545c64" text-color="#fff"
-                 active-text-color="#ffd04b">
-          <!--一级菜单-->
-          <el-menu-item index="/home/exam">
-            <template slot="title">
+        <el-menu
+          router
+          background-color="#545c64"
+          text-color="#fff"
+          active-text-color="#ffd04b"
+          :default-active="$route.path"
+        >
+          <el-menu-item :index="'/home/'+item.path" v-for="item in menulist" :key="item.id">
+            <template>
               <i class="el-icon-location"></i>
-              <span>考试查询</span>
-            </template>
-          </el-menu-item>
-          <el-menu-item index="/home/grade">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>成绩查询</span>
-            </template>
-          </el-menu-item>
-          <el-menu-item index="/home/subject">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>选择课程</span>
-            </template>
-          </el-menu-item>
-          <el-menu-item index="/home/curriculum">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>查看课表</span>
+              <span>{{item.authName}}</span>
             </template>
           </el-menu-item>
         </el-menu>
+<!--        <el-menu router :default-active="$route.path" background-color="#545c64" text-color="#fff"-->
+<!--                 active-text-color="#ffd04b">-->
+<!--          &lt;!&ndash;一级菜单&ndash;&gt;-->
+<!--          <el-menu-item index="/home/exam">-->
+<!--            <template slot="title">-->
+<!--              <i class="el-icon-location"></i>-->
+<!--              <span>考试查询</span>-->
+<!--            </template>-->
+<!--          </el-menu-item>-->
+<!--          <el-menu-item index="/home/grade">-->
+<!--            <template slot="title">-->
+<!--              <i class="el-icon-location"></i>-->
+<!--              <span>成绩查询</span>-->
+<!--            </template>-->
+<!--          </el-menu-item>-->
+<!--          <el-menu-item index="/home/subject">-->
+<!--            <template slot="title">-->
+<!--              <i class="el-icon-location"></i>-->
+<!--              <span>选择课程</span>-->
+<!--            </template>-->
+<!--          </el-menu-item>-->
+<!--          <el-menu-item index="/home/curriculum">-->
+<!--            <template slot="title">-->
+<!--              <i class="el-icon-location"></i>-->
+<!--              <span>查看课表</span>-->
+<!--            </template>-->
+<!--          </el-menu-item>-->
+<!--        </el-menu>-->
       </el-aside>
       <!--右侧内容区-->
       <el-main>
@@ -60,19 +74,27 @@
     res.then((v) => {
       if (!v.data.data) return this.$router.push('/')
       window.sessionStorage.setItem('nickname', v.data.data.nickname)
+      this.menulist = this.getMenuList(v.data.data.roleId)
     }).finally(this.nickname = window.sessionStorage.getItem('nickname'))
   },
   data () {
     return {
+      menulist: [],
       nickname: window.sessionStorage.getItem('nickname')
     }
   },
   methods: {
     logout () {
-      const res = this.$http.delete('api/v1/auth')
+      this.$http.delete('api/v1/auth')
       window.sessionStorage.clear()
       this.$router.push('/')
-      console.log(res)
+    },
+    getMenuList (id) {
+      switch (id) {
+        case 1: return [{ id: 0, path: 'exam', authName: '考试列表' }, { id: 1, path: 'courses', authName: '查询课程' }]
+        case 2: return [{ id: 0, path: 'exam', authName: '考试列表' }, { id: 1, path: 'grade', authName: '查看成绩' }]
+        case 3: return [{ id: 0, path: 'exam', authName: '考试列表' }, { id: 1, path: 'grade', authName: '查看成绩' }]
+      }
     }
   }
 }
@@ -93,7 +115,7 @@
     justify-content: space-between;
     align-items: center;
     background-color: #1f2329;
-    color: #fff;
+    color: rgba(255, 255, 255, 0.97);
     font-size: 20px;
     text-align: center;
     line-height: 60px;
@@ -111,7 +133,7 @@
   }
 
   .el-main {
-    background-color: #E9EEF3;
+    background-color: #ffffff;
     color: #333;
     text-align: center;
     line-height: 40px;
