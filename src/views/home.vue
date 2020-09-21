@@ -14,7 +14,7 @@
       <el-aside width="200px">
         <div class="personal">
           <img src="../assets/user.png" style="width:100px;border-radius: 50%;padding: 10px">
-          <div>{{nickname}}</div>
+          <div>{{ nickname }}</div>
         </div>
         <!--侧边栏菜单区域-->
         <el-menu
@@ -68,24 +68,32 @@
   </el-container>
 </template>
 
-<script>export default {
-  beforeCreate () {
-    const res = this.$http.get('api/v1/auth')
-    res.then((v) => {
-      if (!v.data.data) return this.$router.push('/')
-      window.sessionStorage.setItem('nickname', v.data.data.nickname)
-      this.menulist = this.getMenuList(v.data.data.roleId)
-    }).finally(this.nickname = window.sessionStorage.getItem('nickname'))
+<script>
+import global from '../components/global'
+
+export default {
+  created () {
+    this.$axios.get('api/v1/auth')
+      .then((data) => {
+        console.log(data)
+        if (!data) {
+          // window.sessionStorage.setItem('nickname', data.nickname)
+          return this.$router.push('/')
+        } else {
+          global.userInfo = data
+          this.menulist = this.getMenuList(global.userInfo.roleId)
+        }
+      })
   },
   data () {
     return {
-      menulist: [],
-      nickname: window.sessionStorage.getItem('nickname')
+      nickname: global.userInfo.nickname,
+      menulist: []
     }
   },
   methods: {
     logout () {
-      this.$http.delete('api/v1/auth')
+      this.$axios.delete('api/v1/auth')
       window.sessionStorage.clear()
       this.$router.push('/')
     },
@@ -101,18 +109,27 @@
 </script>
 
 <style type="less" scoped>
-  .personal {
-    height: 180px;
-    background-color: #847b7b;
-  }
+.personal {
+  height: 180px;
+  background-color: #847b7b;
+}
 
-  .home_container {
-    height: 100%;
-  }
+.home_container {
+  height: 100%;
+}
 
-  .el-header {
+.el-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1f2329;
+  color: #fff;
+  font-size: 20px;
+  text-align: center;
+  line-height: 60px;
+
+  > div {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     background-color: #1f2329;
     color: rgba(255, 255, 255, 0.97);
@@ -125,12 +142,13 @@
       align-items: center;
     }
   }
+}
 
-  .el-aside {
-    background-color: #545c64;
-    color: #333;
-    text-align: center;
-  }
+.el-aside {
+  background-color: #545c64;
+  color: #333;
+  text-align: center;
+}
 
   .el-main {
     background-color: #ffffff;
@@ -138,18 +156,24 @@
     text-align: center;
     line-height: 40px;
   }
+.el-main {
+  background-color: #E9EEF3;
+  color: #333;
+  text-align: center;
+  line-height: 40px;
+}
 
-  body > .el-container {
-    margin-bottom: 40px;
-  }
+body > .el-container {
+  margin-bottom: 40px;
+}
 
-  .el-container:nth-child(5) .el-aside,
-  .el-container:nth-child(6) .el-aside {
-    line-height: 260px;
-  }
+.el-container:nth-child(5) .el-aside,
+.el-container:nth-child(6) .el-aside {
+  line-height: 260px;
+}
 
-  .el-container:nth-child(7) .el-aside {
-    line-height: 320px;
-  }
+.el-container:nth-child(7) .el-aside {
+  line-height: 320px;
+}
 
 </style>
