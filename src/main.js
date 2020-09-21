@@ -17,7 +17,7 @@ axios.interceptors.response.use(
     if (response.data.code) {
       const error = new Error(response.data.msg)
       error.code = response.data.code
-      Vue.prototype.$message.error(response.data.msg)
+      // Vue.prototype.$message.error(response.data.msg)
       return Promise.reject(error)
     }
     return response.data.data

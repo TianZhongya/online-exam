@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>课程列表</h3>
+    <h3>科目管理</h3>
   </div>
 </template>
 

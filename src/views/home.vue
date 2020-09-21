@@ -14,7 +14,7 @@
       <el-aside width="200px">
         <div class="personal">
           <img src="../assets/user.png" style="width:100px;border-radius: 50%;padding: 10px">
-          <div>{{ nickname }}</div>
+          <div>{{ state.userInfo.nickname }}</div>
         </div>
         <!--侧边栏菜单区域-->
         <el-menu router :default-active="$route.path" background-color="#545c64" text-color="#fff"
@@ -55,24 +55,24 @@
 </template>
 
 <script>
-import global from '../components/global'
+import { errorTip } from '@/utils/tips'
+import store from '../store'
 
 export default {
   created () {
     this.$axios.get('api/v1/auth')
       .then((data) => {
-        console.log(data)
-        if (!data) {
-          // window.sessionStorage.setItem('nickname', data.nickname)
-          return this.$router.push('/')
-        } else {
-          global.userInfo = data
-        }
+        store.state.userInfo.id = data.id
+        store.state.userInfo.username = data.username
+        store.state.userInfo.nickname = data.nickname
+      }).catch(reason => {
+        errorTip(reason)
+        return this.$router.push('/')
       })
   },
   data () {
     return {
-      nickname: global.userInfo.nickname
+      state: store.state
     }
   },
   methods: {
