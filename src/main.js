@@ -17,13 +17,14 @@ axios.interceptors.response.use(
     if (response.data.code) {
       const error = new Error(response.data.msg)
       error.code = response.data.code
-      // Vue.prototype.$message.error(response.data.msg)
+      console.log(response.data)
       return Promise.reject(error)
     }
     return response.data.data
   },
   // 接口错误状态处理，也就是说无响应时的处理
   error => {
+    console.log(error)
     return Promise.reject(error.response.status) // 返回接口返回的错误信息
   })
 
