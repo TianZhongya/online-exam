@@ -110,7 +110,9 @@ export default {
         case 3: return [
           { id: 0, path: 'exam', authName: '考试列表' },
           { id: 1, path: 'courses', authName: '查询课程' },
-          { id: 1, path: 'grade', authName: 'teacher' }]
+          { id: 2, path: 'grade', authName: 'teacher' },
+          { id: 3, path: 'subject', authName: '科目' }
+        ]
       }
     }
   }

@@ -155,7 +155,7 @@ export default {
         if (this.regMobile.test(this.userFlag)) this.loginForm.mobile = this.userFlag
         if (this.regEmail.test(this.userFlag)) this.loginForm.email = this.userFlag
         if (this.regName.test(this.userFlag)) this.loginForm.username = this.userFlag
-        if (!(this.loginForm.email || this.loginForm.email || this.loginForm.username)) return
+        if (!(this.loginForm.email || this.loginForm.email || this.loginForm.username)) return false
         this.$axios.post('api/v1/auth', this.loginForm)
           .then(value => {
             this.$message.success('登陆成功')
