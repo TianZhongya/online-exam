@@ -25,42 +25,21 @@
           <el-button type="primary" @click="onSubmit">添加</el-button>
         </el-form-item>
       </el-form>
+      <paginate-table :data-list="courseTable" :pagination="pagination" :page-change="changePage">
+      </paginate-table>
       <el-table
         width=”100%“
         :data="courseTable"
         border
         :header-cell-style="[{height: '20px'}]"
       >
-        <el-table-column
-          prop="id"
-          label="课程号">
-        </el-table-column>
-        <el-table-column
-          prop="subjectName"
-          label="课程名">
-        </el-table-column>
-        <el-table-column
-          prop="subtitle"
-          label="课程标题">
-        </el-table-column>
-        <el-table-column
-          prop="startTime"
-          label="开始时间"
-          :formatter="dateFormatter"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="endTime"
-          label="结束时间"
-          :formatter="dateFormatter">
-        </el-table-column>
-        <el-table-column
-          prop="teacherNames"
-          label="任课教师" :formatter="typeFormatter">
-        </el-table-column>
-        <el-table-column
-          v-if="state.userInfo.roleId==3"
-          align="right" label="操作">
+        <el-table-column prop="id" label="课程号"></el-table-column>
+        <el-table-column prop="subjectName" label="课程名"></el-table-column>
+        <el-table-column prop="subtitle" label="课程标题"></el-table-column>
+        <el-table-column prop="startTime" label="开始时间" :formatter="dateFormatter"></el-table-column>
+        <el-table-column prop="endTime" label="结束时间" :formatter="dateFormatter"></el-table-column>
+        <el-table-column prop="teacherNames" label="任课教师" :formatter="typeFormatter"></el-table-column>
+        <el-table-column v-if="state.userInfo.roleId==3" align="right" label="操作">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -110,6 +89,7 @@ export default {
   data () {
     return {
       state: store.state,
+      pagination: {},
       myChosenChecked: false,
       myCreatedChecked: false,
       myTaughtChecked: false,
@@ -135,6 +115,17 @@ export default {
     }
   },
   methods: {
+    changePage (pageNum) {
+      const params = getCourse.initParams()
+      params.personal = this.myCreate
+      params.pageNum = pageNum
+      getCourse.request(params)
+        .then(resp => {
+          this.courseTable = resp.results
+          this.pagination = resp.pagination
+        })
+        .catch(errorTip)
+    },
     handleDelete (index, row) {
       this.$axios.delete('api/v1/teacher/courses/' + row.id)
         .then((data) => {

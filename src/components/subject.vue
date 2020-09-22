@@ -47,7 +47,6 @@
 
 <script>
 import getSubject from '@/api/subject/getSubject'
-import { Pagination } from '@/api/baseClass'
 import { errorTip } from '@/utils/tips'
 import store from '../store'
 import { dateTimeFormatter } from '@/utils/time'
@@ -65,7 +64,7 @@ export default {
       state: store.state,
       myCreate: true,
       subjectList: [],
-      pagination: new Pagination(),
+      pagination: {},
       dateTimeFormatter: dateTimeFormatter,
       editDialogOpen: false,
       form: {
