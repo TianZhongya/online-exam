@@ -9,7 +9,7 @@
       width=”100%“
       :data="tableData"
       border
-      :header-cell-style="[{height: '20px'}]"
+      :header-cell-style="{height: '20px'}"
       >
         <el-table-column
           prop="date"

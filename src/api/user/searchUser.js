@@ -1,10 +1,10 @@
 import axios from 'axios'
 
 class Params {
-  pageNum=1;
-  perPage=10;
-  personal=false;
-  name=''
+  pageNum = 1;
+  perPage = 20;
+  name = '';
+  roleId = 0
 }
 
 export const initParams = function () {
@@ -12,7 +12,7 @@ export const initParams = function () {
 }
 
 export function request (params) {
-  return axios.get('/api/v1/subjects', {
+  return axios.get('/api/v1/users', {
     params: params
   })
 }

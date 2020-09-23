@@ -29,11 +29,11 @@
       </el-table-column>
     </paginate-table>
 
-    <el-dialog title="提示" :visible.sync="editDialogOpen" width="30%">
+    <el-dialog title="创建科目" :visible.sync="editDialogOpen" width="30%">
 
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="科目名称" prop="name">
-          <el-input v-model.trim="form.name"></el-input>
+          <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="create">创建</el-button>
