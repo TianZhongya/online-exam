@@ -31,34 +31,6 @@
             </template>
           </el-menu-item>
         </el-menu>
-<!--        <el-menu router :default-active="$route.path" background-color="#545c64" text-color="#fff"-->
-<!--                 active-text-color="#ffd04b">-->
-<!--          &lt;!&ndash;一级菜单&ndash;&gt;-->
-<!--          <el-menu-item index="/home/exam">-->
-<!--            <template slot="title">-->
-<!--              <i class="el-icon-location"></i>-->
-<!--              <span>考试查询</span>-->
-<!--            </template>-->
-<!--          </el-menu-item>-->
-<!--          <el-menu-item index="/home/grade">-->
-<!--            <template slot="title">-->
-<!--              <i class="el-icon-location"></i>-->
-<!--              <span>成绩查询</span>-->
-<!--            </template>-->
-<!--          </el-menu-item>-->
-<!--          <el-menu-item index="/home/subject">-->
-<!--            <template slot="title">-->
-<!--              <i class="el-icon-location"></i>-->
-<!--              <span>选择课程</span>-->
-<!--            </template>-->
-<!--          </el-menu-item>-->
-<!--          <el-menu-item index="/home/curriculum">-->
-<!--            <template slot="title">-->
-<!--              <i class="el-icon-location"></i>-->
-<!--              <span>查看课表</span>-->
-<!--            </template>-->
-<!--          </el-menu-item>-->
-<!--        </el-menu>-->
       </el-aside>
       <!--右侧内容区-->
       <el-main>
@@ -100,18 +72,19 @@ export default {
     getMenuList (id) {
       switch (id) {
         case 1: return [
-          { id: 0, path: 'exam', authName: '考试列表' },
-          { id: 1, path: 'courses', authName: '查询课程' },
-          { id: 2, path: 'grade', authName: 'admin' }]
+          { id: 0, path: 'users', authName: '用户管理' }
+        ]
         case 2: return [
           { id: 0, path: 'exam', authName: '考试列表' },
           { id: 1, path: 'courses', authName: '查询课程' },
-          { id: 2, path: 'grade', authName: 'student' }]
+          { id: 2, path: 'grade', authName: 'student' }
+        ]
         case 3: return [
-          { id: 0, path: 'exam', authName: '考试列表' },
           { id: 1, path: 'courses', authName: '查询课程' },
-          { id: 2, path: 'grade', authName: 'teacher' },
-          { id: 3, path: 'subject', authName: '科目' }
+          { id: 2, path: 'subjects', authName: '科目' },
+          { id: 3, path: 'questions', authName: '题库' },
+          { id: 4, path: 'exam', authName: '考试列表' },
+          { id: 5, path: 'grade', authName: '成绩' }
         ]
       }
     }

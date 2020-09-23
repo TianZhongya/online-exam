@@ -17,7 +17,6 @@
 
 <script>
 // import { errorTip } from '../utils/tips'
-// import store from '../store'
 import { dateTimeFormatter } from '../utils/time'
 import PaginateTable from './PaginateTable'
 import store from '../store'
@@ -34,6 +33,11 @@ export default {
     }
   },
   methods: {
+    getExamList () {
+    }
+  },
+  created () {
+    this.getExamList()
   }
 }
 </script>

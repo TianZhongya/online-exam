@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table :data="dataList" style="width: 100%">
+    <el-table :data="dataList" style="width: 100%" border @row-click="onRowClick">
       <slot></slot>
     </el-table>
 
@@ -25,6 +25,11 @@ export default {
     dataList: Array,
     pagination: Object,
     pageChange: Function
+  },
+  methods: {
+    onRowClick (row, column, event) {
+      this.$emit('row-click', row, column, event)
+    }
   }
 }
 </script>
