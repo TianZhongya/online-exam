@@ -17,14 +17,20 @@
         </el-col>
       </el-row>
       <paginate-table :data-list="courseTable" :pagination="pagination" :page-change="changePage">
-        <el-table-column prop="id" label="课程号"></el-table-column>
-        <el-table-column prop="subjectName" label="课程名"></el-table-column>
+        <el-table-column prop="id" label="课程号" width="60" ></el-table-column>
+        <el-table-column prop="subjectId" label="科目号" width="60" ></el-table-column>
+        <el-table-column prop="subjectName" label="科目名"></el-table-column>
         <el-table-column prop="subtitle" label="课程标题"></el-table-column>
-        <el-table-column prop="startTime" label="开始时间" :formatter="dateFormatter"></el-table-column>
-        <el-table-column prop="endTime" label="结束时间" :formatter="dateFormatter"></el-table-column>
+        <el-table-column prop="startTime" label="开始时间" :formatter="dateFormatter" width="100" ></el-table-column>
+        <el-table-column prop="endTime" label="结束时间" :formatter="dateFormatter" width="100" ></el-table-column>
         <el-table-column prop="teacherNames" label="任课教师" :formatter="typeFormatter"></el-table-column>
         <el-table-column v-if="state.userInfo.roleId===3" align="right" label="操作">
           <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="openEditExamPlan(scope.$index, scope.row)">创建考试
+            </el-button>
             <el-button
               size="mini"
               type="danger"
@@ -86,6 +92,32 @@
       </el-form>
 
     </el-dialog>
+
+    <el-dialog title="新建考试计划" :visible.sync="editExamDialogOpen" width="40%">
+
+      <el-form :inline="true" :model="examForm" class="demo-form-inline">
+        <el-form-item label="试卷选择">
+          <el-select v-model="examForm.paperId" placeholder="选择试卷">
+            <el-option v-for="paper in papers" :key="paper.id" :label="paper.title" :value="paper.id"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="时间范围">
+          <el-date-picker
+            v-model="examForm.range"
+            type="datetimerange"
+            align="right"
+            value-format="timestamp"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+          >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmitExam">添加</el-button>
+        </el-form-item>
+      </el-form>
+
+    </el-dialog>
   </div>
 </template>
 
@@ -94,6 +126,7 @@ import PaginateTable from './PaginateTable'
 import SubjectSelector from './SubjectSelector'
 import UserSelector from './UserSelector'
 
+import queryPapers from '@/api/paper/queryPapers'
 import getCourse from '../api/course/getCourse'
 import { errorTip, successTip } from '@/utils/tips'
 import { forDate } from '@/utils/time'
@@ -135,7 +168,16 @@ export default {
         subtitle: '',
         teacherIds: []
       },
-      editDialogOpen: false
+      editDialogOpen: false,
+      editExamDialogOpen: false,
+      examForm: {
+        courseId: 0,
+        range: [],
+        paperId: null,
+        endTime: 0,
+        startTime: 0
+      },
+      papers: []
     }
   },
   methods: {
@@ -196,6 +238,36 @@ export default {
         })
         .catch(errorTip)
       this.query()
+    },
+    openEditExamPlan (index, row) {
+      console.log(row)
+      console.log(row.subjectId)
+      this.editExamDialogOpen = true
+      this.examForm.subjectId = row.subjectId
+      this.setPapers()
+      this.examForm.courseId = row.id
+    },
+    setPapers () {
+      const subjectId = this.examForm.subjectId
+      const params = queryPapers.initParams()
+      params.subjectId = subjectId
+      queryPapers.request(params)
+        .then(resp => {
+          this.papers = resp
+        }).catch(errorTip)
+    },
+    onSubmitExam () {
+      this.examForm.startTime = this.examForm.range[0] / 1000
+      this.examForm.endTime = this.examForm.range[1] / 1000
+      console.log(this.examForm)
+      this.$axios.post('api/v1/teacher/plans', this.examForm)
+        .then(value => {
+          this.editDialogOpen = false
+          console.log(value)
+          successTip('创建成功')
+          this.$router.push('/home/exam')
+        })
+        .catch(errorTip)
     }
   }
 }
