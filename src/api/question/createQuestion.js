@@ -7,7 +7,7 @@ const Type = {
   shortAnswer: 5
 }
 
-function forTypeName (id) {
+export function forTypeName (id) {
   if (id === 1) return '单选'
   if (id === 2) return '多选'
   if (id === 3) return '判断'

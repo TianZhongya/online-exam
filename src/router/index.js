@@ -45,6 +45,10 @@ const routes = [
       {
         path: 'questions',
         component: () => import('../components/QuestionManage')
+      },
+      {
+        path: 'papers',
+        component: () => import('../components/papers')
       }
     ]
   }
