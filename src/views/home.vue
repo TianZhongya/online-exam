@@ -45,6 +45,7 @@ import { errorTip } from '@/utils/tips'
 import store from '../store'
 
 export default {
+  name: 'Home',
   beforeCreate () {
     this.$axios.get('api/v1/auth')
       .then((data) => {
@@ -75,17 +76,17 @@ export default {
           { id: 0, path: 'users', authName: '用户管理' }
         ]
         case 2: return [
-          { id: 0, path: 'exam', authName: '考试列表' },
-          { id: 1, path: 'courses', authName: '查询课程' },
+          { id: 0, path: 'exam', authName: '考试' },
+          { id: 1, path: 'courses', authName: '课程' },
           { id: 2, path: 'grade', authName: '成绩' }
         ]
         case 3: return [
-          { id: 1, path: 'courses', authName: '查询课程' },
+          { id: 1, path: 'courses', authName: '课程' },
           { id: 2, path: 'subjects', authName: '科目' },
           { id: 3, path: 'questions', authName: '题库' },
-          { id: 4, path: 'papers', authName: '试卷库' },
-          { id: 4, path: 'exam', authName: '考试列表' },
-          { id: 5, path: 'grade', authName: '成绩' }
+          { id: 4, path: 'papers', authName: '试卷' },
+          { id: 5, path: 'exam', authName: '考试' },
+          { id: 6, path: 'grade', authName: '成绩' }
         ]
       }
     }
