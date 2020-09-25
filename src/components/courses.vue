@@ -105,7 +105,6 @@
           <el-date-picker
             v-model="examForm.range"
             type="datetimerange"
-            align="right"
             value-format="timestamp"
             start-placeholder="开始日期"
             end-placeholder="结束日期"

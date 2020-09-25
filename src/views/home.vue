@@ -77,8 +77,7 @@ export default {
         ]
         case 2: return [
           { id: 0, path: 'exam', authName: '考试' },
-          { id: 1, path: 'courses', authName: '课程' },
-          { id: 2, path: 'grade', authName: '成绩' }
+          { id: 1, path: 'courses', authName: '课程' }
         ]
         case 3: return [
           { id: 1, path: 'courses', authName: '课程' },
@@ -86,7 +85,7 @@ export default {
           { id: 3, path: 'questions', authName: '题库' },
           { id: 4, path: 'papers', authName: '试卷' },
           { id: 5, path: 'exam', authName: '考试' },
-          { id: 6, path: 'grade', authName: '成绩' }
+          { id: 6, path: 'records', authName: '判卷' }
         ]
       }
     }
