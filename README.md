@@ -1,5 +1,20 @@
 # online_exam
 
+### 项目结构
+        ├─api
+        │  ├─course
+        │  ├─question
+        │  ├─subject
+        │  └─user
+        ├─assets
+        ├─components
+        ├─css
+        ├─plugins
+        ├─router
+        ├─store
+        ├─utils
+        └─views
+
 ## Project setup
 ```
 npm install
