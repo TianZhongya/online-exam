@@ -14,7 +14,7 @@
       <el-aside width="200px">
         <div class="personal">
           <img src="../assets/user.png" style="width:100px;border-radius: 50%;padding: 10px">
-          <div>{{ nickname }}</div>
+          <div>{{ state.userInfo.nickname }}</div>
         </div>
         <!--侧边栏菜单区域-->
         <el-menu
@@ -31,34 +31,6 @@
             </template>
           </el-menu-item>
         </el-menu>
-<!--        <el-menu router :default-active="$route.path" background-color="#545c64" text-color="#fff"-->
-<!--                 active-text-color="#ffd04b">-->
-<!--          &lt;!&ndash;一级菜单&ndash;&gt;-->
-<!--          <el-menu-item index="/home/exam">-->
-<!--            <template slot="title">-->
-<!--              <i class="el-icon-location"></i>-->
-<!--              <span>考试查询</span>-->
-<!--            </template>-->
-<!--          </el-menu-item>-->
-<!--          <el-menu-item index="/home/grade">-->
-<!--            <template slot="title">-->
-<!--              <i class="el-icon-location"></i>-->
-<!--              <span>成绩查询</span>-->
-<!--            </template>-->
-<!--          </el-menu-item>-->
-<!--          <el-menu-item index="/home/subject">-->
-<!--            <template slot="title">-->
-<!--              <i class="el-icon-location"></i>-->
-<!--              <span>选择课程</span>-->
-<!--            </template>-->
-<!--          </el-menu-item>-->
-<!--          <el-menu-item index="/home/curriculum">-->
-<!--            <template slot="title">-->
-<!--              <i class="el-icon-location"></i>-->
-<!--              <span>查看课表</span>-->
-<!--            </template>-->
-<!--          </el-menu-item>-->
-<!--        </el-menu>-->
       </el-aside>
       <!--右侧内容区-->
       <el-main>
@@ -69,39 +41,52 @@
 </template>
 
 <script>
-import global from '../components/global'
+import { errorTip } from '@/utils/tips'
+import store from '../store'
 
 export default {
-  created () {
+  name: 'Home',
+  beforeCreate () {
     this.$axios.get('api/v1/auth')
       .then((data) => {
-        console.log(data)
-        if (!data) {
-          // window.sessionStorage.setItem('nickname', data.nickname)
-          return this.$router.push('/')
-        } else {
-          global.userInfo = data
-          this.menulist = this.getMenuList(global.userInfo.roleId)
-        }
+        store.state.userInfo.id = data.id
+        store.state.userInfo.username = data.username
+        store.state.userInfo.nickname = data.nickname
+        store.state.userInfo.roleId = data.roleId
+        this.menulist = this.getMenuList(store.state.userInfo.roleId)
+      }).catch(reason => {
+        errorTip(reason)
+        return this.$router.push('/')
       })
   },
   data () {
     return {
-      nickname: global.userInfo.nickname,
+      state: store.state,
       menulist: []
     }
   },
   methods: {
     logout () {
       this.$axios.delete('api/v1/auth')
-      window.sessionStorage.clear()
       this.$router.push('/')
     },
     getMenuList (id) {
       switch (id) {
-        case 1: return [{ id: 0, path: 'exam', authName: '考试列表' }, { id: 1, path: 'courses', authName: '查询课程' }]
-        case 2: return [{ id: 0, path: 'exam', authName: '考试列表' }, { id: 1, path: 'grade', authName: '查看成绩' }]
-        case 3: return [{ id: 0, path: 'exam', authName: '考试列表' }, { id: 1, path: 'grade', authName: '查看成绩' }]
+        case 1: return [
+          { id: 0, path: 'users', authName: '用户管理' }
+        ]
+        case 2: return [
+          { id: 0, path: 'exam', authName: '考试' },
+          { id: 1, path: 'courses', authName: '课程' }
+        ]
+        case 3: return [
+          { id: 1, path: 'courses', authName: '课程' },
+          { id: 2, path: 'subjects', authName: '科目' },
+          { id: 3, path: 'questions', authName: '题库' },
+          { id: 4, path: 'papers', authName: '试卷' },
+          { id: 5, path: 'exam', authName: '考试' },
+          { id: 6, path: 'records', authName: '判卷' }
+        ]
       }
     }
   }

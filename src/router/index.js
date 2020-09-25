@@ -23,6 +23,10 @@ const routes = [
         component: () => import('../components/exam.vue')
       },
       {
+        path: 'users',
+        component: () => import('../components/UserManage.vue')
+      },
+      {
         path: 'courses',
         component: () => import('../components/courses.vue')
       },
@@ -31,12 +35,30 @@ const routes = [
         component: () => import('../components/grade')
       },
       {
-        path: 'subject',
+        path: 'subjects',
         component: () => import('../components/subject')
       },
       {
         path: 'curriculum',
         component: () => import('../components/curriculum')
+      },
+      {
+        path: 'questions',
+        component: () => import('../components/QuestionManage')
+      },
+      {
+        path: 'papers',
+        component: () => import('../components/papers')
+      },
+      {
+        path: 'plan/:id/paper',
+        component: () => import('../components/Examining'),
+        props: true
+      },
+      {
+        path: 'records',
+        component: () => import('../components/Record'),
+        props: true
       }
     ]
   }
