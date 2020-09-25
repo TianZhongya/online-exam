@@ -49,6 +49,16 @@ const routes = [
       {
         path: 'papers',
         component: () => import('../components/papers')
+      },
+      {
+        path: 'plan/:id/paper',
+        component: () => import('../components/Examining'),
+        props: true
+      },
+      {
+        path: 'records',
+        component: () => import('../components/Record'),
+        props: true
       }
     ]
   }
