@@ -172,6 +172,7 @@ export default {
             this.$message.success('注册成功')
             this.goLogin()
           })
+          .catch(errorTip)
       })
     },
     goLogin () {

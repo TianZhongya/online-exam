@@ -42,7 +42,6 @@
         </el-table-column>
       </el-table>
     </el-card>
-
     <el-dialog title="统计" :visible.sync="statsDialogOpen" width="50%">
       <el-progress :text-inside="true" :stroke-width="24" :percentage="stat._90/stat._all*100"></el-progress>>90%
       <el-progress :text-inside="true" :stroke-width="24" :percentage="stat._80/stat._all*100" status="success"></el-progress>>80%
@@ -60,7 +59,6 @@ import store from '../store'
 import axios from 'axios'
 export default {
   name: 'examPlan',
-  components: {},
   data () {
     return {
       state: store.state,

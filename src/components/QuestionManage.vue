@@ -30,24 +30,26 @@
         ></el-button>
       </el-col>
     </el-row>
-    <paginate-table :data-list="questionList" :pagination="pagination" :page-change="changePage"
-                    @row-click="openDetail">
-      <el-table-column label="id" prop="id" width="60" />
-      <el-table-column label="类型" prop="typeId" :formatter="typeFormatter" width="60" />
-      <el-table-column label="标题" resizable prop="description.title" show-overflow-tooltip />
-      <el-table-column label="创建者id" prop="creatorId" width="90" />
-      <el-table-column label="创建人" prop="creatorName" width="90" />
-      <el-table-column label="科目" prop="subjectName" width="100" />
-      <el-table-column align="right" width="90">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.row.id)">Delete
-          </el-button>
-        </template>
-      </el-table-column>
-    </paginate-table>
+    <el-card>
+      <paginate-table :data-list="questionList" :pagination="pagination" :page-change="changePage"
+                      @row-click="openDetail">
+        <el-table-column label="id" prop="id" width="60" />
+        <el-table-column label="类型" prop="typeId" :formatter="typeFormatter" width="60" />
+        <el-table-column label="标题" resizable prop="description.title" show-overflow-tooltip />
+        <el-table-column label="创建者id" prop="creatorId" width="90" />
+        <el-table-column label="创建人" prop="creatorName" width="90" />
+        <el-table-column label="科目" prop="subjectName" width="100" />
+        <el-table-column align="right" width="90">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.row.id)">Delete
+            </el-button>
+          </template>
+        </el-table-column>
+      </paginate-table>
+    </el-card>
 
     <el-dialog title="详情" :visible.sync="detailOpened" width="40%">
       <el-card class="box-card">

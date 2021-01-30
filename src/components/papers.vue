@@ -2,24 +2,26 @@
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>考试列表</el-breadcrumb-item>
+      <el-breadcrumb-item>试卷列表</el-breadcrumb-item>
       <el-button @click="editDialogOpen = true" type="primary" icon="el-icon-circle-plus-outline" circle
                  style="float: right"></el-button>
     </el-breadcrumb>
 
-    <el-table :data="paperList" @row-click="openDetail">
-      <el-table-column label="id" prop="id" width="60" />
-      <el-table-column label="创建者id" prop="teacherId" width="90" />
-      <el-table-column label="创建人" prop="teacherName" width="90" />
-      <el-table-column label="科目" prop="subjectName" width="100" />
-      <el-table-column label="考试时间(秒)" prop="duration" width="100" />
-      <el-table-column label="标题" resizable prop="title" show-overflow-tooltip />
-      <el-table-column align="right" width="90">
-        <template slot-scope="scope">
-          <el-button size="mini" type="danger" @click="console.log(scope.row.id)">神秘操作</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <el-card>
+      <el-table :data="paperList" @row-click="openDetail">
+        <el-table-column label="id" prop="id" width="60" />
+        <el-table-column label="创建者id" prop="teacherId" width="90" />
+        <el-table-column label="创建人" prop="teacherName" width="90" />
+        <el-table-column label="科目" prop="subjectName" width="100" />
+        <el-table-column label="总分" prop="score" width="100" />
+        <el-table-column label="标题" resizable prop="title" show-overflow-tooltip />
+        <el-table-column align="right" width="90">
+          <template slot-scope="scope">
+            <el-button size="mini" type="primary" @click="getPerview(scope.row)">预览试卷</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
 
     <el-dialog title="创建试卷" :visible.sync="editDialogOpen" width="30%">
 
@@ -43,7 +45,7 @@
           </el-form-item>
         </div>
         <el-form-item>
-          <el-button type="primary" @click="getPreview">创建</el-button>
+          <el-button type="primary" @click="checkPreview">创建</el-button>
           <el-button @click="editDialogOpen = false">取消</el-button>
         </el-form-item>
       </el-form>
@@ -68,6 +70,25 @@
         </div>
         <el-button type="primary" @click="createPaper">创建</el-button>
         <el-button @click="editDialogOpen = false">试试手气</el-button>
+      </el-card>
+    </el-dialog>
+    <el-dialog title="预览" :visible.sync="preview" width="80%">
+      <el-card class="box-card"  style="margin-left: 60px;margin-right: 60px;">
+        <div>
+          总分:{{ paperPreview.score }}
+        </div>
+        <div v-for="(question,index) in paperPreview.questions" :key="index">
+          <el-divider>{{ index + 1 }}:{{ forTypeName(question.typeId) }}</el-divider>
+          <div v-for="(wrapper,index) in question.descriptions" :key="wrapper.id" style="text-align: left">
+            <p>{{ index + 1 }}: {{ wrapper.description.title }}</p>
+            <div v-if="wrapper.typeId===1||wrapper.typeId===2">
+              <div v-for="option in wrapper.description.options" :key="option.id" style="margin-left: 20px">
+                {{ String.fromCharCode(option.id + 65) }}:  {{ option.name }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <el-button type="primary" @click="preview = false">关闭</el-button>
       </el-card>
     </el-dialog>
   </div>
@@ -97,6 +118,7 @@ export default {
       paperList: [],
       pagination: {},
       editDialogOpen: false,
+      preview: false,
       PaperForm: {
         duration: 60,
         title: '试卷测试',
@@ -193,7 +215,13 @@ export default {
     }
   },
   methods: {
-    getPreview () {
+    getPerview (row) {
+      this.$axios.get('/api/v1/teacher/papers/' + row.id)
+        .then(data => {
+          this.preview = true
+        })
+    },
+    checkPreview () {
       if (!this.PaperForm.subjectId) {
         errorTip(new Error('请填写科目'))
         return
@@ -204,8 +232,6 @@ export default {
       }
       this.$axios.post('api/v1/teacher/papers/preview', this.PaperForm)
         .then(data => {
-          console.log(data)
-          successTip('创建成功')
           this.paperPreview = data
           this.editDialogOpen = false
           this.previewOpen = true

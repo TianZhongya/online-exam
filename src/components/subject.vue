@@ -9,26 +9,27 @@
       </el-col>
     </el-row>
 
-    <paginate-table :data-list="subjectList" :pagination="pagination" :page-change="changePage">
-      <el-table-column label="id" prop="id" />
-      <el-table-column label="科目名称" prop="name" />
-      <el-table-column label="创建者" prop="creatorName" />
-      <el-table-column label="创建时间" prop="createdTime" :formatter="dateTimeFormatter" />
-      <el-table-column
-        align="right">
-        <template slot="header">
-          <el-checkbox @change="query">我创建的</el-checkbox>
-        </template>
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.row.id)">Delete
-          </el-button>
-        </template>
-      </el-table-column>
-    </paginate-table>
-
+    <el-card>
+      <paginate-table :data-list="subjectList" :pagination="pagination" :page-change="changePage">
+        <el-table-column label="id" prop="id" />
+        <el-table-column label="科目名称" prop="name" />
+        <el-table-column label="创建者" prop="creatorName" />
+        <el-table-column label="创建时间" prop="createdTime" :formatter="dateTimeFormatter" />
+        <el-table-column
+          align="right">
+          <template slot="header">
+            <el-checkbox @change="query">我创建的</el-checkbox>
+          </template>
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.row.id)">Delete
+            </el-button>
+          </template>
+        </el-table-column>
+      </paginate-table>
+    </el-card>
     <el-dialog title="创建科目" :visible.sync="editDialogOpen" width="30%">
 
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
@@ -57,12 +58,12 @@ export default {
   name: 'Subject',
   components: { PaginateTable },
   created () {
-    this.query(true)
+    this.query(false)
   },
   data () {
     return {
       state: store.state,
-      myCreate: true,
+      myCreate: false,
       subjectList: [],
       pagination: {},
       dateTimeFormatter: dateTimeFormatter,
