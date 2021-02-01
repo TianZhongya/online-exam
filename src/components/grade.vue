@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h3>成绩列表</h3>
-  </div>
+    <h3>成绩列表</h3>  </div>
 </template>
 
 <script>

@@ -1,24 +1,26 @@
 <template>
   <div>
-    <el-table :data="records">
-      <el-table-column prop="id" label="ID" width="60"></el-table-column>
-      <el-table-column prop="examPlanId" label="考试计划id" width="80"></el-table-column>
-      <el-table-column prop="studentId" label="学生id"></el-table-column>
-      <el-table-column prop="studentName" label="学生名字" width="150"></el-table-column>
-      <el-table-column prop="title" label="试卷标题"></el-table-column>
-      <el-table-column prop="updatedTime" label="交卷时间" :formatter="dateTimeFormatter" width="150"></el-table-column>
-      <el-table-column prop="factScore" label="得分" width="60"></el-table-column>
-      <el-table-column prop="releaseStatusId" label="作答状态" :formatter="statusFormatter" width="150"></el-table-column>
-      <el-table-column align="right" label="操作">
-        <template slot-scope="scope">
-          <el-button v-if="scope.row.releaseStatusId!==4"
-            size="mini"
-            type="primary"
-            @click="openJudjeDialog(scope.row)">进入判题
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <el-card>
+      <el-table :data="records">
+        <el-table-column prop="id" label="ID" width="60"></el-table-column>
+        <el-table-column prop="examPlanId" label="考试计划id" width="80"></el-table-column>
+        <el-table-column prop="studentId" label="学生id"></el-table-column>
+        <el-table-column prop="studentName" label="学生名字" width="150"></el-table-column>
+        <el-table-column prop="title" label="试卷标题"></el-table-column>
+        <el-table-column prop="updatedTime" label="交卷时间" :formatter="dateTimeFormatter" width="150"></el-table-column>
+        <el-table-column prop="factScore" label="得分" width="60"></el-table-column>
+        <el-table-column prop="releaseStatusId" label="作答状态" :formatter="statusFormatter" width="150"></el-table-column>
+        <el-table-column align="right" label="操作">
+          <template slot-scope="scope">
+            <el-button v-if="scope.row.releaseStatusId!==4"
+                       size="mini"
+                       type="primary"
+                       @click="openJudjeDialog(scope.row)">进入判题
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
     <el-dialog title="判卷" :visible.sync="dialogOpen" width="60%">
       <el-card class="box-card" style="margin-left: 60px;margin-right: 60px;">
         <div>
